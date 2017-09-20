@@ -1,6 +1,10 @@
-import { Component } from "@angular/core";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { LoanData, LoanFormDataInterface } from "./loan-data";
+import { Component, ViewChild } from "@angular/core";
+import { LoanData } from "./model/loan-data";
+import { LoanFormDataInterface } from "./common/loan-form-data-interface";
+import { InterestValueInterface } from "./common/interest-value-interface";
+import { InterestCurveComponent } from "./interest-curve/interest-curve.component";
+import { CostsCurveMonthlyComponent } from "./costs-curve-monthly/costs-curve-monthly.component";
+import { CostsCurveCumulativeComponent } from "./costs-curve-cumulative/costs-curve-cumulative.component";
 
 @Component({
   selector: "app-root",
@@ -8,23 +12,31 @@ import { LoanData, LoanFormDataInterface } from "./loan-data";
   styleUrls: ["./app.component.css"]
 })
 export class AppComponent {
-  private loanDataForm = new FormGroup({
-    loanAmount : new FormControl(200000, [Validators.required, Validators.min(0)]),
-    loanYears : new FormControl(15, [Validators.required, Validators.min(1)]),
-    interestStart : new FormControl(1, [Validators.required, Validators.min(0)]),
-    interestEnd : new FormControl(5, [Validators.required, Validators.min(0)]),
-    margin : new FormControl(1, [Validators.required, Validators.min(0)]),
-  });
 
   private model = new LoanData();
 
-  private hasError(formControlName: string) {
-    return !this.loanDataForm.get(formControlName).valid;
+  @ViewChild(InterestCurveComponent) private interestCurve: InterestCurveComponent;
+  @ViewChild(CostsCurveMonthlyComponent) private costsCurveMonthly: CostsCurveMonthlyComponent;
+  @ViewChild(CostsCurveCumulativeComponent) private costsCurveCumulative: CostsCurveCumulativeComponent;
+
+  private initGraphs(loanDataForm: LoanFormDataInterface) {
+    this.model.setFormData(loanDataForm);
+    this.updateCharts();
   }
 
-  private initGraphs() {
-    if (this.loanDataForm.valid) {
-      this.model.setFormData(this.loanDataForm.value as LoanFormDataInterface);
+  private updateInterestRate(rate: InterestValueInterface) {
+    this.model.setYearlyInterestRate(rate.idx, rate.value);
+    this.updateCharts();
+  }
+
+  /**
+   * Update data for all the charts.
+   */
+  private updateCharts() {
+    for (let chart of [this.interestCurve, this.costsCurveMonthly, this.costsCurveCumulative]) {
+      if (chart) {
+        chart.updateCharts(this.model);
+      }
     }
   }
 }

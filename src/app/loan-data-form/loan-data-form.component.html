@@ -1,0 +1,33 @@
+<form [formGroup]="loanDataForm" (submit)="onFormSubmit()">
+  <div class="row">
+    <div class="col-md-6 col-sm-12 form-group" [ngClass]="{ 'has-error': hasError('loanAmount') }">
+      <label for="loanAmount">Loan amount (&euro;)</label>
+      <input type="number" class="form-control" id="loanAmount" placeholder="Enter amount" formControlName="loanAmount">
+    </div>
+    <div class="col-md-6 col-sm-12 form-group" [ngClass]="{ 'has-error': hasError('loanYears') }">
+      <label for="loanYears">Loan duration (years)</label>
+      <input type="number" class="form-control" id="loanYears" placeholder="Enter years" formControlName="loanYears">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-sm-12 form-group" [ngClass]="{ 'has-error': hasError('interestStart') }">
+      <label for="interestStart">Interest rate at the beginning (%)</label>
+      <input type="number" class="form-control" id="interestStart" placeholder="Enter amount" formControlName="interestStart">
+    </div>
+    <div class="col-md-6 col-sm-12 form-group" [ngClass]="{ 'has-error': hasError('interestEnd') }">
+      <label for="interestEnd">Interest rate at the end (%)</label>
+      <input type="number" class="form-control" id="interestEnd" placeholder="Enter years" formControlName="interestEnd">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-sm-12 form-group" [ngClass]="{ 'has-error': hasError('margin') }">
+      <label for="margin">Margin rate (%)</label>
+      <input type="number" class="form-control" id="margin" placeholder="Enter amount" formControlName="margin">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-sm-12">
+      <button type="submit" class="btn btn-primary" [ngClass]="{ disabled: !loanDataForm.valid }">Select</button>
+    </div>
+  </div>
+</form>

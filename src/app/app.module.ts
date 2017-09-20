@@ -7,14 +7,16 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { AppComponent } from "./app.component";
 import { InterestCurveComponent } from "./interest-curve/interest-curve.component";
-import { CostsCurveComponent } from "./costs-curve/costs-curve.component";
+import { LoanDataFormComponent } from "./loan-data-form/loan-data-form.component";
+import { CostsCurveMonthlyComponent } from "./costs-curve-monthly/costs-curve-monthly.component";
+import { CostsCurveCumulativeComponent } from "./costs-curve-cumulative/costs-curve-cumulative.component";
 
 declare var require: any;
 
 export function highchartsFactory() {
   const hc = require("highcharts");
-  const dd = require("highcharts-draggable-points");
-  dd(hc);
+  const hcdp = require("highcharts-draggable-points");
+  hcdp(hc);
 
   return hc;
 }
@@ -23,7 +25,9 @@ export function highchartsFactory() {
   declarations: [
     AppComponent,
     InterestCurveComponent,
-    CostsCurveComponent,
+    LoanDataFormComponent,
+    CostsCurveMonthlyComponent,
+    CostsCurveCumulativeComponent,
   ],
   imports: [
     BrowserModule,
