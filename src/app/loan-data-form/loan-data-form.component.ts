@@ -3,6 +3,8 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Subject } from "rxjs/Subject";
 import { LoanData } from "../model/loan-data";
 import { LoanFormDataInterface } from "../common/loan-form-data-interface";
+import "rxjs/add/operator/takeUntil";
+import "rxjs/add/operator/debounceTime";
 
 @Component({
   selector: "app-loan-data-form",
@@ -22,6 +24,7 @@ export class LoanDataFormComponent implements OnInit, OnDestroy {
     margin : new FormControl(1, [Validators.required, Validators.min(0)]),
   });
 
+  private showValidationError: boolean;
   private ngUnsubscribe: Subject<any> = new Subject();
 
   constructor() { }
@@ -33,6 +36,11 @@ export class LoanDataFormComponent implements OnInit, OnDestroy {
     if (this.initialValues) {
       this.loanDataForm.patchValue(this.initialValues);
     }
+
+    // delay showing validation error message until user stops typing:
+    this.loanDataForm.valueChanges.takeUntil(this.ngUnsubscribe).debounceTime(500).subscribe(
+      () => this.showValidationError = !this.loanDataForm.valid
+    );
   }
 
   /**
@@ -61,5 +69,11 @@ export class LoanDataFormComponent implements OnInit, OnDestroy {
     return !this.loanDataForm.get(formControlName).valid;
   }
 
+  /**
+   * Returns true if the entire form is invalid
+   */
+  private hasErrors() {
+    return !this.loanDataForm.valid;
+  }
 
 }

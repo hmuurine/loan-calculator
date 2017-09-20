@@ -40,7 +40,7 @@ export class InterestCurveComponent extends GenericCurveComponent implements OnI
    * @param initialInterestRates 
    */
   private initGraphOptions(initialInterestRates: number[]) {
-    this.options = this.generateGraphOptions("Yearly interest rate (drag & drop to fine-tune)", "Year", "Interest rate (%)", false);
+    this.options = this.generateGraphOptions("Yearly interest rate<br>(drag & drop to fine-tune)", "Year", "Interest rate (%)", false);
     this.options["series"].push({
       name: "Interest rate (%)",
       data: initialInterestRates,

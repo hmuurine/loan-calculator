@@ -32,7 +32,7 @@ export class CostsCurveMonthlyComponent extends GenericCurveComponent implements
    * @param margin 
    */
   private initGraphOptions(monthlyPayment: number[], monthlyInterest: number[]) {
-    this.options = this.generateGraphOptions("Monthly costs at the beginning of a year", "Year", "Costs (€)", true);
+    this.options = this.generateGraphOptions("Monthly costs", "Year", "Costs (€)", true);
     this.options["series"].push({
       name: "Interest (€)",
       data: monthlyInterest,

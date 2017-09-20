@@ -19,11 +19,21 @@ export class AppComponent {
   @ViewChild(CostsCurveMonthlyComponent) private costsCurveMonthly: CostsCurveMonthlyComponent;
   @ViewChild(CostsCurveCumulativeComponent) private costsCurveCumulative: CostsCurveCumulativeComponent;
 
+  /**
+   * Initializes graphs after initial data submit.
+   * 
+   * @param loanDataForm 
+   */
   private initGraphs(loanDataForm: LoanFormDataInterface) {
     this.model.setFormData(loanDataForm);
     this.updateCharts();
   }
 
+  /**
+   * Function that's called when modifying a single yearly interest.
+   *
+   * @param rate 
+   */
   private updateInterestRate(rate: InterestValueInterface) {
     this.model.setYearlyInterestRate(rate.idx, rate.value);
     this.updateCharts();
@@ -39,4 +49,21 @@ export class AppComponent {
       }
     }
   }
+
+  /**
+   * Total cumulative costs at the end of loan period
+   */
+  private getTotalCosts() {
+    let cumulArray = this.model.getCumulativeTotal();
+    return cumulArray && cumulArray.length > 0 ? Math.round(cumulArray[cumulArray.length - 1]) : "";
+  }
+
+  /**
+   * Total cumulative interest at the end of loan period
+   */
+  private getTotalInterest() {
+    let cumulArray = this.model.getCumulativeInterest();
+    return cumulArray && cumulArray.length > 0 ? Math.round(cumulArray[cumulArray.length - 1]) : "";
+  }
+
 }

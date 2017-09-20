@@ -1,4 +1,7 @@
 <form [formGroup]="loanDataForm" (submit)="onFormSubmit()">
+  <div *ngIf="showValidationError && hasErrors()" class="alert alert-warning">
+    Check input values
+  </div>
   <div class="row">
     <div class="col-md-6 col-sm-12 form-group" [ngClass]="{ 'has-error': hasError('loanAmount') }">
       <label for="loanAmount">Loan amount (&euro;)</label>

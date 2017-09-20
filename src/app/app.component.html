@@ -5,23 +5,37 @@
     (onSubmit)="initGraphs($event)">
   </app-loan-data-form>
   <div *ngIf="model.graphsInitialized()">
-    <div class="col-md-12 col-sm-12">
-      <app-interest-curve
-        [initialInterestRates]="model.getYearlyInterestRates()"
-        (valueChanged)="updateInterestRate($event)">
-      </app-interest-curve>
+    <hr/>
+    <div class="row">
+      <div class="col-md-4 col-sm-12">
+        <app-interest-curve
+          [initialInterestRates]="model.getYearlyInterestRates()"
+          (valueChanged)="updateInterestRate($event)">
+        </app-interest-curve>
+      </div>
+      <div class="col-md-4 col-sm-12">
+        <app-costs-curve-monthly
+          [initialMonthlyPayment]="model.getMonthlyPayment()"
+          [initialMonthlyInterest]="model.getMonthlyInterest()">
+        </app-costs-curve-monthly>
+      </div>
+      <div class="col-md-4 col-sm-12">
+        <app-costs-curve-cumulative
+          [initialCumulativeTotal]="model.getCumulativeTotal()"
+          [initialCumulativeInterest]="model.getCumulativeInterest()">
+        </app-costs-curve-cumulative>
+      </div>
     </div>
-    <div class="col-md-6 col-sm-12">
-      <app-costs-curve-monthly
-        [initialMonthlyPayment]="model.getMonthlyPayment()"
-        [initialMonthlyInterest]="model.getMonthlyInterest()">
-      </app-costs-curve-monthly>
-    </div>
-    <div class="col-md-6 col-sm-12">
-      <app-costs-curve-cumulative
-        [initialCumulativeTotal]="model.getCumulativeTotal()"
-        [initialCumulativeInterest]="model.getCumulativeInterest()">
-      </app-costs-curve-cumulative>
+    <hr/>
+    <div class="row">
+      <div class="col-md-6 col-sm-12 form-group">
+        <label for="totalCosts">Cumulative costs (&euro;)</label>
+        <input type="number" class="form-control" id="totalCosts" [value]="getTotalCosts()" disabled="disabled">
+      </div>
+      <div class="col-md-6 col-sm-12 form-group">
+        <label for="totalInterest">Cumulative interest (&euro;)</label>
+        <input type="number" class="form-control" id="totalInterest" [value]="getTotalInterest()" disabled="disabled">
+      </div>
     </div>
   </div>
 </div>

@@ -32,7 +32,7 @@ export class CostsCurveCumulativeComponent extends GenericCurveComponent impleme
    * @param margin 
    */
   private initGraphOptions(cumulativeTotal: number[], cumulativeInterest: number[]) {
-    this.options = this.generateGraphOptions("Cumulative costs", "Year", "Costs (€)", true);
+    this.options = this.generateGraphOptions("Cumulative costs over time", "Year", "Costs (€)", true);
     this.options["series"].push({
       name: "Cumulative interest (€)",
       data: cumulativeInterest,
