@@ -50,20 +50,4 @@ export class AppComponent {
     }
   }
 
-  /**
-   * Total cumulative costs at the end of loan period
-   */
-  private getTotalCosts() {
-    let cumulArray = this.model.getCumulativeTotal();
-    return cumulArray && cumulArray.length > 0 ? Math.round(cumulArray[cumulArray.length - 1]) : "";
-  }
-
-  /**
-   * Total cumulative interest at the end of loan period
-   */
-  private getTotalInterest() {
-    let cumulArray = this.model.getCumulativeInterest();
-    return cumulArray && cumulArray.length > 0 ? Math.round(cumulArray[cumulArray.length - 1]) : "";
-  }
-
 }

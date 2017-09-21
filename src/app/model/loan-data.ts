@@ -70,6 +70,22 @@ export class LoanData {
     }
 
     /**
+     * Total cumulative costs at the end of loan period
+     */
+    public getTotalCosts() {
+        let cumulArray = this.getCumulativeTotal();
+        return cumulArray && cumulArray.length > 0 ? Math.round(cumulArray[cumulArray.length - 1]) : "";
+    }
+
+    /**
+     * Total cumulative interest at the end of loan period
+     */
+    public getTotalInterest() {
+        let cumulArray = this.getCumulativeInterest();
+        return cumulArray && cumulArray.length > 0 ? Math.round(cumulArray[cumulArray.length - 1]) : "";
+    }
+
+    /**
      * Sets interest rate for year idx.
      * 
      * @param idx 

@@ -4,7 +4,7 @@
     [initialValues]="model.getFormData()"
     (onSubmit)="initGraphs($event)">
   </app-loan-data-form>
-  <div *ngIf="model.graphsInitialized()">
+  <div *ngIf="model.graphsInitialized()" class="fadein">
     <hr/>
     <div class="row">
       <div class="col-md-4 col-sm-12">
@@ -30,11 +30,11 @@
     <div class="row">
       <div class="col-md-6 col-sm-12 form-group">
         <label for="totalCosts">Cumulative costs (&euro;)</label>
-        <input type="number" class="form-control" id="totalCosts" [value]="getTotalCosts()" disabled="disabled">
+        <input type="number" class="form-control" id="totalCosts" [value]="model.getTotalCosts()" disabled="disabled">
       </div>
       <div class="col-md-6 col-sm-12 form-group">
         <label for="totalInterest">Cumulative interest (&euro;)</label>
-        <input type="number" class="form-control" id="totalInterest" [value]="getTotalInterest()" disabled="disabled">
+        <input type="number" class="form-control" id="totalInterest" [value]="model.getTotalInterest()" disabled="disabled">
       </div>
     </div>
   </div>
