@@ -4,11 +4,11 @@ import { GenericCurveComponent } from "../common/generic-curve-component";
 import { LoanData } from "../model/loan-data";
 
 @Component({
-  selector: "app-costs-curve-monthly",
+  selector: "app-costs-curve-yearly",
   templateUrl: "../common/generic-curve.component.html",
-  styleUrls: ["./costs-curve-monthly.component.css"]
+  styleUrls: ["./costs-curve-yearly.component.css"]
 })
-export class CostsCurveMonthlyComponent extends GenericCurveComponent implements OnInit {
+export class CostsCurveYearlyComponent extends GenericCurveComponent implements OnInit {
 
   @Input() public initialYearlyPrincipal: number[];
   @Input() public initialYearlyInterest: number[];
@@ -53,8 +53,8 @@ export class CostsCurveMonthlyComponent extends GenericCurveComponent implements
    * Updates all chart data of this component
    */
   public updateCharts(data: LoanData) {
-    this.updateChartData(0, data.paymentData.yearlyPrincipal);
-    this.updateChartData(1, data.paymentData.yearlyInterest);
+    this.updateChartData(1, data.paymentData.yearlyPrincipal);
+    this.updateChartData(0, data.paymentData.yearlyInterest);
   }
 
 }

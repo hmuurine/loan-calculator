@@ -4,7 +4,7 @@ import { LoanFormDataInterface } from "./model/loan-form-data-interface";
 import { InterestValueInterface } from "./model/interest-value-interface";
 import { LoanCalculatorController } from "./calculator/loan-calculator-controller";
 import { InterestCurveComponent } from "./interest-curve/interest-curve.component";
-import { CostsCurveMonthlyComponent } from "./costs-curve-monthly/costs-curve-monthly.component";
+import { CostsCurveYearlyComponent } from "./costs-curve-yearly/costs-curve-yearly.component";
 import { CostsCurveCumulativeComponent } from "./costs-curve-cumulative/costs-curve-cumulative.component";
 
 @Component({
@@ -17,7 +17,7 @@ export class AppComponent {
   private controller = new LoanCalculatorController();
 
   @ViewChild(InterestCurveComponent) private interestCurve: InterestCurveComponent;
-  @ViewChild(CostsCurveMonthlyComponent) private costsCurveMonthly: CostsCurveMonthlyComponent;
+  @ViewChild(CostsCurveYearlyComponent) private costsCurveYearly: CostsCurveYearlyComponent;
   @ViewChild(CostsCurveCumulativeComponent) private costsCurveCumulative: CostsCurveCumulativeComponent;
 
   /**
@@ -44,7 +44,7 @@ export class AppComponent {
    * Update data for all the charts.
    */
   private updateCharts() {
-    for (let chart of [this.interestCurve, this.costsCurveMonthly, this.costsCurveCumulative]) {
+    for (let chart of [this.interestCurve, this.costsCurveYearly, this.costsCurveCumulative]) {
       if (chart) {
         chart.updateCharts(this.controller.getLoanData());
       }

@@ -9,44 +9,43 @@ export class LoanCalculatorEqualAmortization extends LoanCalculator {
      * Returns yearly payment values and cumulative values.
      */
     public calculateCostData(formData: LoanFormDataInterface, yearlyInterestRates: number[]): LoanPaymentDataInterface {
-        let monthlyPayment: number[] = [];
-        let monthlyInterest: number[] = [];
+        let yearlyPrincipal: number[] = [];
+        let yearlyInterest: number[] = [];
         let cumulativeTotal: number[] = [];
         let cumulativeInterest: number[] = [];
 
         let loanRemaining = formData.loanAmount;
         let loanMonths = formData.loanYears * 12;
         let monthlyLoanPrincipal = formData.loanAmount / loanMonths;
+        let yearlyLoanPrincipal = formData.loanAmount / formData.loanYears;
         let cumulTotalEur = 0;
         let cumulTotalInterestEur = 0;
 
-        // first pass: calculate interests in the beginning of each year
-        for (let i = 0; i <= formData.loanYears; i++) {
-            let interestPct = formData.margin + yearlyInterestRates[i];
-            let interestEur = loanRemaining * interestPct / 100.0 / 12.0;
-            let paymentEur = i < formData.loanYears ? monthlyLoanPrincipal : 0; // loan already paid at the beginning of last year
-
-            monthlyInterest.push(interestEur);
-            monthlyPayment.push(paymentEur);
-
-            loanRemaining -= monthlyLoanPrincipal * 12;
-        }
-
-        // second pass: calculate total yearly payments using the averages of
-        // current year and next year start payments
+        // cumulative values start at 0 and increase by the end of next year by yearly amounts. Add first zeros:
         cumulativeInterest.push(cumulTotalInterestEur);
         cumulativeTotal.push(cumulTotalEur);
-        for (let i = 1; i <= formData.loanYears; i++) {
-            let yearlyInterestEur = (monthlyInterest[i] + monthlyInterest[i - 1]) / 2 * 12;
-            cumulTotalInterestEur += yearlyInterestEur;
-            cumulTotalEur += yearlyInterestEur + monthlyLoanPrincipal * 12;
+
+        for (let year = 0; year < formData.loanYears; year++) {
+            let cumulativeYearlyInterest = 0;
+            for (let month = 0; month < 12; month++) {
+                let interestPct = this.getInterestAt(year, month, yearlyInterestRates, formData.interestAdjustementPeriod);
+                let interestEur = loanRemaining * interestPct / 100 / 12;
+                cumulativeYearlyInterest += interestEur;
+                loanRemaining -= monthlyLoanPrincipal;
+            }
+            yearlyInterest.push(cumulativeYearlyInterest);
+            yearlyPrincipal.push(yearlyLoanPrincipal);
+
+            cumulTotalEur += cumulativeYearlyInterest + yearlyLoanPrincipal;
+            cumulTotalInterestEur += cumulativeYearlyInterest;
             cumulativeInterest.push(cumulTotalInterestEur);
             cumulativeTotal.push(cumulTotalEur);
+
         }
 
         return {
-            yearlyPrincipal: monthlyPayment,
-            yearlyInterest: monthlyInterest,
+            yearlyPrincipal: yearlyPrincipal,
+            yearlyInterest: yearlyInterest,
             cumulativeTotal: cumulativeTotal,
             cumulativeInterest: cumulativeInterest
         } as LoanPaymentDataInterface;

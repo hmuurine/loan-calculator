@@ -68,7 +68,9 @@ export class LoanCalculatorController {
     }
 
     /**
-     * Generates a linearily increasing interest curve.
+     * Generates a linearily increasing interest curve. Generates loanYears + 1 values because loan payment
+     * is going to continue until final day of December and we assume that interest can change even
+     * during the last year.
      * 
      * @param interestStart 
      * @param interestEnd 
