@@ -13,19 +13,35 @@
     </div>
   </div>
   <div class="row">
+    <div class="col-md-6 col-sm-12 form-group" [ngClass]="{ 'has-error': hasError('loanType') }">
+      <label for="loanType">Loan type</label>
+      <select name="loanType" id="loanType" class="form-control" formControlName="loanType">
+        <option value="">- Select -</option>
+        <option *ngFor="let type of loanTypes" value="{{type.type}}">{{type.name}}</option>
+      </select>
+    </div>
+    <div class="col-md-6 col-sm-12 form-group" [ngClass]="{ 'has-error': hasError('interestAdjustementPeriod') }">
+      <label for="interestAdjustementPeriod">Interest rate adjustment period (months)</label>
+      <select name="interestAdjustementPeriod" id="interestAdjustementPeriod" class="form-control" formControlName="interestAdjustementPeriod">
+        <option value="">- Select -</option>
+        <option *ngFor="let period of interestAdjustementPeriods" value="{{period}}">{{period}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-md-6 col-sm-12 form-group" [ngClass]="{ 'has-error': hasError('interestStart') }">
       <label for="interestStart">Interest rate at the beginning (%)</label>
-      <input type="number" class="form-control" id="interestStart" placeholder="Enter amount" formControlName="interestStart">
+      <input type="number" class="form-control" id="interestStart" placeholder="Enter interest rate" formControlName="interestStart">
     </div>
     <div class="col-md-6 col-sm-12 form-group" [ngClass]="{ 'has-error': hasError('interestEnd') }">
       <label for="interestEnd">Interest rate at the end (%)</label>
-      <input type="number" class="form-control" id="interestEnd" placeholder="Enter years" formControlName="interestEnd">
+      <input type="number" class="form-control" id="interestEnd" placeholder="Enter interest rate" formControlName="interestEnd">
     </div>
   </div>
   <div class="row">
     <div class="col-md-6 col-sm-12 form-group" [ngClass]="{ 'has-error': hasError('margin') }">
       <label for="margin">Margin rate (%)</label>
-      <input type="number" class="form-control" id="margin" placeholder="Enter amount" formControlName="margin">
+      <input type="number" class="form-control" id="margin" placeholder="Enter margin rate" formControlName="margin">
     </div>
   </div>
   <div class="row">

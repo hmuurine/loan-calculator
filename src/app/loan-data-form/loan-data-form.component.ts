@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Subject } from "rxjs/Subject";
-import { LoanData } from "../model/loan-data";
-import { LoanFormDataInterface } from "../common/loan-form-data-interface";
+import { LoanType } from "../model/loan-type-enum";
+import { LoanFormDataInterface } from "../model/loan-form-data-interface";
 import "rxjs/add/operator/takeUntil";
 import "rxjs/add/operator/debounceTime";
 
@@ -19,11 +19,18 @@ export class LoanDataFormComponent implements OnInit, OnDestroy {
   private loanDataForm = new FormGroup({
     loanAmount : new FormControl(200000, [Validators.required, Validators.min(0)]),
     loanYears : new FormControl(15, [Validators.required, Validators.min(1)]),
+    loanType : new FormControl(LoanType.EqualAmortization, [Validators.required]),
+    interestAdjustementPeriod : new FormControl(12, [Validators.required]),
     interestStart : new FormControl(1, [Validators.required, Validators.min(0)]),
     interestEnd : new FormControl(5, [Validators.required, Validators.min(0)]),
     margin : new FormControl(1, [Validators.required, Validators.min(0)]),
   });
 
+  private loanTypes = [
+    { type: LoanType.EqualAmortization, name: "Equal amortization" },
+    { type: LoanType.Bullet, name: "Bullet" },
+  ];
+  private interestAdjustementPeriods = [1, 3, 6, 12];
   private showValidationError: boolean;
   private ngUnsubscribe: Subject<any> = new Subject();
 

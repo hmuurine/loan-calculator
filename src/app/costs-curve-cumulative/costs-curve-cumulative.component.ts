@@ -38,7 +38,7 @@ export class CostsCurveCumulativeComponent extends GenericCurveComponent impleme
       data: cumulativeInterest,
     });
     this.options["series"].push({
-      name: "Cumulative total cost (€)",
+      name: "Cumulative total payments (€)",
       data: cumulativeTotal,
     });
   }
@@ -47,8 +47,8 @@ export class CostsCurveCumulativeComponent extends GenericCurveComponent impleme
    * Updates all chart data of this component
    */
   public updateCharts(data: LoanData) {
-    this.updateChartData(0, data.getCumulativeInterest());
-    this.updateChartData(1, data.getCumulativeTotal());
+    this.updateChartData(0, data.paymentData.cumulativeInterest);
+    this.updateChartData(1, data.paymentData.cumulativeTotal);
   }
 
 }

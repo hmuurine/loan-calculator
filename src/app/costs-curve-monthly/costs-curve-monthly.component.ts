@@ -10,8 +10,8 @@ import { LoanData } from "../model/loan-data";
 })
 export class CostsCurveMonthlyComponent extends GenericCurveComponent implements OnInit {
 
-  @Input() public initialMonthlyPayment: number[];
-  @Input() public initialMonthlyInterest: number[];
+  @Input() public initialYearlyPrincipal: number[];
+  @Input() public initialYearlyInterest: number[];
 
   constructor() {
     super();
@@ -21,26 +21,25 @@ export class CostsCurveMonthlyComponent extends GenericCurveComponent implements
    * Angular component init hook. Initializes graph with initial values.
    */
   public ngOnInit() {
-    this.initGraphOptions(this.initialMonthlyPayment, this.initialMonthlyInterest);
+    this.initGraphOptions(this.initialYearlyPrincipal, this.initialYearlyInterest);
   }
 
   /**
    * Initialize Highcarts chart options.
    * 
-   * @param initialInterestRates 
-   * @param loanAmount 
-   * @param margin 
+   * @param yearlyPrincipal 
+   * @param monthlyInterest 
    */
-  private initGraphOptions(monthlyPayment: number[], monthlyInterest: number[]) {
-    this.options = this.generateGraphOptions("Monthly costs", "Year", "Costs (€)", true);
+  private initGraphOptions(yearlyPrincipal: number[], yearlyInterest: number[]) {
+    this.options = this.generateGraphOptions("Yearly costs", "Year", "Costs (€)", true);
     this.options["series"].push({
       name: "Interest (€)",
-      data: monthlyInterest,
+      data: yearlyInterest,
       type: "column"
     });
     this.options["series"].push({
-      name: "Payment (€)",
-      data: monthlyPayment,
+      name: "Principal (€)",
+      data: yearlyPrincipal,
       type: "column"
     });
     this.options["plotOptions"] = {
@@ -54,8 +53,8 @@ export class CostsCurveMonthlyComponent extends GenericCurveComponent implements
    * Updates all chart data of this component
    */
   public updateCharts(data: LoanData) {
-    this.updateChartData(0, data.getMonthlyInterest());
-    this.updateChartData(1, data.getMonthlyPayment());
+    this.updateChartData(0, data.paymentData.yearlyPrincipal);
+    this.updateChartData(1, data.paymentData.yearlyInterest);
   }
 
 }

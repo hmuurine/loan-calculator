@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges } from "@angular/core";
 import { Chart, ChartObject, ChartOptions } from "highcharts";
-import { InterestValueInterface } from "../common/interest-value-interface";
+import { InterestValueInterface } from "../model/interest-value-interface";
 import { GenericCurveComponent } from "../common/generic-curve-component";
 import { LoanData } from "../model/loan-data";
 
@@ -66,7 +66,7 @@ export class InterestCurveComponent extends GenericCurveComponent implements OnI
    * Updates all chart data of this component
    */
   public updateCharts(data: LoanData) {
-    this.updateChartData(0, data.getYearlyInterestRates());
+    this.updateChartData(0, data.yearlyInterestRates);
   }
 
 }

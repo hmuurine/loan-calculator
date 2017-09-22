@@ -1,7 +1,8 @@
 import { Component, ViewChild } from "@angular/core";
 import { LoanData } from "./model/loan-data";
-import { LoanFormDataInterface } from "./common/loan-form-data-interface";
-import { InterestValueInterface } from "./common/interest-value-interface";
+import { LoanFormDataInterface } from "./model/loan-form-data-interface";
+import { InterestValueInterface } from "./model/interest-value-interface";
+import { LoanCalculatorController } from "./calculator/loan-calculator-controller";
 import { InterestCurveComponent } from "./interest-curve/interest-curve.component";
 import { CostsCurveMonthlyComponent } from "./costs-curve-monthly/costs-curve-monthly.component";
 import { CostsCurveCumulativeComponent } from "./costs-curve-cumulative/costs-curve-cumulative.component";
@@ -13,7 +14,7 @@ import { CostsCurveCumulativeComponent } from "./costs-curve-cumulative/costs-cu
 })
 export class AppComponent {
 
-  private model = new LoanData();
+  private controller = new LoanCalculatorController();
 
   @ViewChild(InterestCurveComponent) private interestCurve: InterestCurveComponent;
   @ViewChild(CostsCurveMonthlyComponent) private costsCurveMonthly: CostsCurveMonthlyComponent;
@@ -25,7 +26,7 @@ export class AppComponent {
    * @param loanDataForm 
    */
   private initGraphs(loanDataForm: LoanFormDataInterface) {
-    this.model.setFormData(loanDataForm);
+    this.controller.setFormData(loanDataForm);
     this.updateCharts();
   }
 
@@ -35,7 +36,7 @@ export class AppComponent {
    * @param rate 
    */
   private updateInterestRate(rate: InterestValueInterface) {
-    this.model.setYearlyInterestRate(rate.idx, rate.value);
+    this.controller.setYearlyInterestRate(rate.idx, rate.value);
     this.updateCharts();
   }
 
@@ -45,7 +46,7 @@ export class AppComponent {
   private updateCharts() {
     for (let chart of [this.interestCurve, this.costsCurveMonthly, this.costsCurveCumulative]) {
       if (chart) {
-        chart.updateCharts(this.model);
+        chart.updateCharts(this.controller.getLoanData());
       }
     }
   }

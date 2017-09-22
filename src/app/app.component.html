@@ -1,28 +1,28 @@
 <div class="container">
   <h2>Loan calculator</h2>
   <app-loan-data-form
-    [initialValues]="model.getFormData()"
+    [initialValues]="controller.getFormData()"
     (onSubmit)="initGraphs($event)">
   </app-loan-data-form>
-  <div *ngIf="model.graphsInitialized()" class="fadein">
+  <div *ngIf="controller.graphsInitialized()" class="fadein">
     <hr/>
     <div class="row">
       <div class="col-md-4 col-sm-12">
         <app-interest-curve
-          [initialInterestRates]="model.getYearlyInterestRates()"
+          [initialInterestRates]="controller.getLoanData().yearlyInterestRates"
           (valueChanged)="updateInterestRate($event)">
         </app-interest-curve>
       </div>
       <div class="col-md-4 col-sm-12">
         <app-costs-curve-monthly
-          [initialMonthlyPayment]="model.getMonthlyPayment()"
-          [initialMonthlyInterest]="model.getMonthlyInterest()">
+          [initialYearlyPrincipal]="controller.getLoanData().paymentData.yearlyPrincipal"
+          [initialYearlyInterest]="controller.getLoanData().paymentData.yearlyInterest">
         </app-costs-curve-monthly>
       </div>
       <div class="col-md-4 col-sm-12">
         <app-costs-curve-cumulative
-          [initialCumulativeTotal]="model.getCumulativeTotal()"
-          [initialCumulativeInterest]="model.getCumulativeInterest()">
+          [initialCumulativeTotal]="controller.getLoanData().paymentData.cumulativeTotal"
+          [initialCumulativeInterest]="controller.getLoanData().paymentData.cumulativeInterest">
         </app-costs-curve-cumulative>
       </div>
     </div>
@@ -30,11 +30,11 @@
     <div class="row">
       <div class="col-md-6 col-sm-12 form-group">
         <label for="totalCosts">Cumulative costs (&euro;)</label>
-        <input type="number" class="form-control" id="totalCosts" [value]="model.getTotalCosts()" disabled="disabled">
+        <input type="number" class="form-control" id="totalCosts" [value]="controller.getLoanData().getTotalCosts()" disabled="disabled">
       </div>
       <div class="col-md-6 col-sm-12 form-group">
         <label for="totalInterest">Cumulative interest (&euro;)</label>
-        <input type="number" class="form-control" id="totalInterest" [value]="model.getTotalInterest()" disabled="disabled">
+        <input type="number" class="form-control" id="totalInterest" [value]="controller.getLoanData().getTotalInterest()" disabled="disabled">
       </div>
     </div>
   </div>
