@@ -91,7 +91,7 @@ export class LoanCalculatorController {
      * @param type 
      */
     private selectLoanDataCalculator(type: LoanType) {
-        switch (type) {
+        switch (Number(type)) {
             case LoanType.EqualAmortization:
                 return new LoanCalculatorEqualAmortization();
             case LoanType.Bullet:
