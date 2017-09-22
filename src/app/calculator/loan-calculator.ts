@@ -53,7 +53,8 @@ export abstract class LoanCalculator {
         for (let year = 0; year < formData.loanYears; year++) {
             let cumulativeYearlyInterest = 0;
             for (let month = 0; month < 12; month++) {
-                let interestPct = this.getInterestAt(year, month, yearlyInterestRates, formData.interestAdjustementPeriod);
+                let interestPct = this.getInterestAt(year, month, yearlyInterestRates,
+                                                     formData.interestAdjustementPeriod) + formData.margin;
                 let interestEur = loanRemaining * interestPct / 100 / 12;
                 cumulativeYearlyInterest += interestEur;
                 loanRemaining -= monthlyLoanPrincipal;
