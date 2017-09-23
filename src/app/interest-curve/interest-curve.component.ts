@@ -30,7 +30,7 @@ export class InterestCurveComponent extends GenericCurveComponent implements OnI
    * @param idx 
    * @param value 
    */
-  private changeInterestRate(idx: number, value: number) {
+  public changeInterestRate(idx: number, value: number) {
     this.valueChanged.emit({idx: idx, value: value});
   }
 

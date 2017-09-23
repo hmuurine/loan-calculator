@@ -14,7 +14,7 @@ import { CostsCurveCumulativeComponent } from "./costs-curve-cumulative/costs-cu
 })
 export class AppComponent {
 
-  private controller = new LoanCalculatorController();
+  public controller = new LoanCalculatorController();
 
   @ViewChild(InterestCurveComponent) private interestCurve: InterestCurveComponent;
   @ViewChild(CostsCurveYearlyComponent) private costsCurveYearly: CostsCurveYearlyComponent;
@@ -25,7 +25,7 @@ export class AppComponent {
    * 
    * @param loanDataForm 
    */
-  private initGraphs(loanDataForm: LoanFormDataInterface) {
+  public initGraphs(loanDataForm: LoanFormDataInterface) {
     this.controller.setFormData(loanDataForm);
     this.updateCharts();
   }
@@ -35,7 +35,7 @@ export class AppComponent {
    *
    * @param rate 
    */
-  private updateInterestRate(rate: InterestValueInterface) {
+  public updateInterestRate(rate: InterestValueInterface) {
     this.controller.setYearlyInterestRate(rate.idx, rate.value);
     this.updateCharts();
   }

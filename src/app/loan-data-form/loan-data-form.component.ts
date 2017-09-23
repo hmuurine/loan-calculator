@@ -16,7 +16,7 @@ export class LoanDataFormComponent implements OnInit, OnDestroy {
   @Input() public initialValues: LoanFormDataInterface;
   @Output() public onSubmit = new EventEmitter<LoanFormDataInterface>();
 
-  private loanDataForm = new FormGroup({
+  public loanDataForm = new FormGroup({
     loanAmount : new FormControl(200000, [Validators.required, Validators.min(0)]),
     loanYears : new FormControl(15, [Validators.required, Validators.min(1)]),
     loanType : new FormControl(LoanType.EqualAmortization, [Validators.required]),
@@ -26,12 +26,12 @@ export class LoanDataFormComponent implements OnInit, OnDestroy {
     margin : new FormControl(1, [Validators.required, Validators.min(0)]),
   });
 
-  private loanTypes = [
+  public loanTypes = [
     { type: LoanType.EqualAmortization, name: "Equal amortization" },
     { type: LoanType.Bullet, name: "Bullet" },
   ];
-  private interestAdjustementPeriods = [1, 3, 6, 12];
-  private showValidationError: boolean;
+  public interestAdjustementPeriods = [1, 3, 6, 12];
+  public showValidationError: boolean;
   private ngUnsubscribe: Subject<any> = new Subject();
 
   constructor() { }
@@ -61,7 +61,7 @@ export class LoanDataFormComponent implements OnInit, OnDestroy {
   /**
    * When form is submitted, and it's valid emit event to parent component.
    */
-  private onFormSubmit() {
+  public onFormSubmit() {
     if (this.loanDataForm.valid) {
       this.onSubmit.emit(this.loanDataForm.value as LoanFormDataInterface);
     }
@@ -72,14 +72,14 @@ export class LoanDataFormComponent implements OnInit, OnDestroy {
    *
    * @param formControlName
    */
-  private hasError(formControlName: string) {
+  public hasError(formControlName: string) {
     return !this.loanDataForm.get(formControlName).valid;
   }
 
   /**
    * Returns true if the entire form is invalid
    */
-  private hasErrors() {
+  public hasErrors() {
     return !this.loanDataForm.valid;
   }
 
