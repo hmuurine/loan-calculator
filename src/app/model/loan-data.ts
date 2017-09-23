@@ -11,7 +11,7 @@ export class LoanData {
      */
     public getTotalCosts() {
         let cumulArray = this.paymentData.cumulativeTotal;
-        return cumulArray && cumulArray.length > 0 ? Math.round(cumulArray[cumulArray.length - 1]) : "";
+        return cumulArray && cumulArray.length > 0 ? (cumulArray[cumulArray.length - 1]).toFixed(2) : "";
     }
 
     /**
@@ -19,7 +19,7 @@ export class LoanData {
      */
     public getTotalInterest() {
         let cumulArray = this.paymentData.cumulativeInterest;
-        return cumulArray && cumulArray.length > 0 ? Math.round(cumulArray[cumulArray.length - 1]) : "";
+        return cumulArray && cumulArray.length > 0 ? (cumulArray[cumulArray.length - 1]).toFixed(2) : "";
     }
 
 }
