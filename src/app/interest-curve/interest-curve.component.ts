@@ -87,7 +87,9 @@ export class InterestCurveComponent extends GenericCurveComponent implements OnI
    * Updates all chart data of this component
    */
   public updateCharts(data: LoanData) {
-    this.updateChartData(0, data.yearlyInterestRates);
+    let visibleData = data.yearlyInterestRates.slice(0, data.yearlyInterestRates.length < data.formData.loanYears + 1 ?
+        data.yearlyInterestRates.length : data.formData.loanYears + 1);
+    this.updateChartData(0, visibleData);
   }
 
   /**

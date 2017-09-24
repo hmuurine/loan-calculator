@@ -1,4 +1,4 @@
-<form [formGroup]="loanDataForm" (submit)="onFormSubmit()">
+<form [formGroup]="loanDataForm" (submit)="emitValuesIfValid()">
   <div *ngIf="showValidationError && hasErrors()" class="alert alert-warning">
     Check input values
   </div>

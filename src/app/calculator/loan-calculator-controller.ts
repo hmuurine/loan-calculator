@@ -38,7 +38,7 @@ export class LoanCalculatorController {
      */
     public setFormData(data: LoanFormDataInterface) {
         this.loanData.formData = data;
-        this.updateLoanInterestRateArray(data.loanYears);
+        this.ensureLoanInterestRateArrayMinLength(data.loanYears + 1);
         this.loanDataCalculator = this.selectLoanDataCalculator(this.loanData.formData.loanType);
         this.updateCostData();
     }
@@ -120,19 +120,18 @@ export class LoanCalculatorController {
     }
 
     /**
-     * Ensures that loan interest rate array has right length. If new years are needed,
+     * Ensures that loan interest rate array has right minimum length. If new years are needed,
      * copies the value of last index.
      * 
      * @param loanYears 
      */
-    private updateLoanInterestRateArray(loanYears: number) {
-        if (this.loanData.yearlyInterestRates.length > loanYears + 1) {
-            this.loanData.yearlyInterestRates = this.loanData.yearlyInterestRates.slice(0, loanYears + 1);
-        } else if (this.loanData.yearlyInterestRates.length < loanYears + 1) {
+    private ensureLoanInterestRateArrayMinLength(minLength: number) {
+        if (this.loanData.yearlyInterestRates.length < minLength) {
             let clone = this.loanData.yearlyInterestRates.slice(0);
             let defaultInterestRate = this.loanData.yearlyInterestRates.length > 0 ?
                 this.loanData.yearlyInterestRates[this.loanData.yearlyInterestRates.length - 1] : 1; // default 1 if empty
-            for (let i = 0; i < loanYears + 1 - this.loanData.yearlyInterestRates.length; i++) {
+            let missingCount = minLength - this.loanData.yearlyInterestRates.length;
+            for (let i = 0; i < missingCount; i++) {
                 clone.push(defaultInterestRate);
             }
             this.loanData.yearlyInterestRates = clone;

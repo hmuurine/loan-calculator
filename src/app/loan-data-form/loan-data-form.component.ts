@@ -38,13 +38,12 @@ export class LoanDataFormComponent implements OnInit, OnDestroy {
    * Angular component init hook. Sets initial values, if given.
    */
   public ngOnInit() {
-    // delay showing validation error message until user stops typing:
+    // delay showing validation error message until user stops typing:. Automatically submit data on typing, if form is valid.
     this.loanDataForm.valueChanges.takeUntil(this.ngUnsubscribe).debounceTime(500).subscribe(
-      () => this.showValidationError = !this.loanDataForm.valid
-    );
-
-    this.loanDataForm.valueChanges.takeUntil(this.ngUnsubscribe).subscribe(
-      () => this.onFormSubmit()
+      () => {
+        this.showValidationError = !this.loanDataForm.valid;
+        this.emitValuesIfValid();
+      }
     );
 
     if (this.initialValues) {
@@ -62,9 +61,9 @@ export class LoanDataFormComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * When form is submitted, and it's valid emit event to parent component.
+   * Emit event to parent component, if form is valid.
    */
-  private onFormSubmit() {
+  private emitValuesIfValid() {
     if (this.loanDataForm.valid) {
       this.valueChanged.emit(this.loanDataForm.value as LoanFormDataInterface);
     }
