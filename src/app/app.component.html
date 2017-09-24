@@ -2,7 +2,7 @@
   <h2>Loan calculator</h2>
   <app-loan-data-form
     [initialValues]="controller.getFormData()"
-    (onSubmit)="initGraphs($event)">
+    (valueChanged)="setLoanData($event)">
   </app-loan-data-form>
   <div *ngIf="controller.graphsInitialized()" class="fadein">
     <hr/>
@@ -10,7 +10,9 @@
       <div class="col-md-4 col-sm-12">
         <app-interest-curve
           [initialInterestRates]="controller.getLoanData().yearlyInterestRates"
-          (valueChanged)="updateInterestRate($event)">
+          [initialFormValues]="controller.getLoanData().interestData"
+          (valueChanged)="updateInterestRate($event)"
+          (onSubmit)="resetInterestRates($event)">
         </app-interest-curve>
       </div>
       <div class="col-md-4 col-sm-12">

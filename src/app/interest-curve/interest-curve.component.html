@@ -1,0 +1,19 @@
+<chart [options]="options" (load)="saveChartInstance($event.context)"></chart>
+<form [formGroup]="interestDataForm" (submit)="onFormSubmit()">
+    <div class="row">
+        <div class="col-md-6 col-sm-12 form-group" [ngClass]="{ 'has-error': hasError('interestStart') }">
+          <label for="interestStart">Start rate (%)</label>
+          <input type="number" class="form-control" id="interestStart" placeholder="Enter interest rate" formControlName="interestStart">
+        </div>
+        <div class="col-md-6 col-sm-12 form-group" [ngClass]="{ 'has-error': hasError('interestEnd') }">
+          <label for="interestEnd">End rate (%)</label>
+          <input type="number" class="form-control" id="interestEnd" placeholder="Enter interest rate" formControlName="interestEnd">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 col-sm-12">
+          <button type="submit" class="btn btn-primary" [ngClass]="{ disabled: !interestDataForm.valid }">Reset interest curve</button>
+        </div>
+      </div>
+    </form>
+    

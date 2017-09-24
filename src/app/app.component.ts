@@ -1,6 +1,7 @@
 import { Component, ViewChild } from "@angular/core";
 import { LoanData } from "./model/loan-data";
 import { LoanFormDataInterface } from "./model/loan-form-data-interface";
+import { LoanInterestDataInterface } from "./model/loan-interest-data-interface";
 import { InterestValueInterface } from "./model/interest-value-interface";
 import { LoanCalculatorController } from "./calculator/loan-calculator-controller";
 import { InterestCurveComponent } from "./interest-curve/interest-curve.component";
@@ -25,7 +26,7 @@ export class AppComponent {
    * 
    * @param loanDataForm 
    */
-  private initGraphs(loanDataForm: LoanFormDataInterface) {
+  public setLoanData(loanDataForm: LoanFormDataInterface) {
     this.controller.setFormData(loanDataForm);
     this.updateCharts();
   }
@@ -35,8 +36,18 @@ export class AppComponent {
    *
    * @param rate 
    */
-  private updateInterestRate(rate: InterestValueInterface) {
+  public updateInterestRate(rate: InterestValueInterface) {
     this.controller.setYearlyInterestRate(rate.idx, rate.value);
+    this.updateCharts();
+  }
+
+  /**
+   * Reset interest rate curve.
+   * 
+   * @param rates 
+   */
+  public resetInterestRates(rates: LoanInterestDataInterface) {
+    this.controller.resetInterestData(rates);
     this.updateCharts();
   }
 

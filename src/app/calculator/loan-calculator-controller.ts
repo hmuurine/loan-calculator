@@ -1,4 +1,5 @@
 import { LoanFormDataInterface } from "../model/loan-form-data-interface";
+import { LoanInterestDataInterface } from "../model/loan-interest-data-interface";
 import { LoanPaymentDataInterface } from "../model/loan-payment-data-interface";
 import { LoanCalculator } from "./loan-calculator";
 import { LoanCalculatorEqualAmortization } from "./loan-calculator-equal-amortization";
@@ -13,6 +14,13 @@ export class LoanCalculatorController {
 
     constructor() {
         this.loanData = new LoanData();
+        if (this.loanData.formData && this.loanData.interestData) {
+            this.loanData.yearlyInterestRates =
+                this.computeInitialInterestRates(this.loanData.interestData.interestStart, this.loanData.interestData.interestEnd,
+                                                 this.loanData.formData.loanYears);
+            this.loanDataCalculator = this.selectLoanDataCalculator(this.loanData.formData.loanType);
+            this.updateCostData();
+        }
     }
 
     /**
@@ -29,8 +37,8 @@ export class LoanCalculatorController {
      * @param data
      */
     public setFormData(data: LoanFormDataInterface) {
-        this.loanData.yearlyInterestRates = this.computeInitialInterestRates(data.interestStart, data.interestEnd, data.loanYears);
         this.loanData.formData = data;
+        this.updateLoanInterestRateArray(data.loanYears);
         this.loanDataCalculator = this.selectLoanDataCalculator(this.loanData.formData.loanType);
         this.updateCostData();
     }
@@ -39,7 +47,7 @@ export class LoanCalculatorController {
      * Is data needed by the graph initialized?
      */
     public graphsInitialized() {
-        return this.loanData.formData !== undefined;
+        return this.loanData.paymentData !== undefined;
     }
 
     /**
@@ -49,6 +57,17 @@ export class LoanCalculatorController {
         return this.loanData;
     }
 
+    /**
+     * Resets the interest curve and updates calculations.
+     * 
+     * @param data 
+     */
+    public resetInterestData(data: LoanInterestDataInterface) {
+        this.loanData.interestData = data;
+        this.loanData.yearlyInterestRates = this.computeInitialInterestRates(data.interestStart, data.interestEnd,
+                this.loanData.formData.loanYears);
+        this.updateCostData();
+    }
 
     /**
      * Sets interest rate for year idx.
@@ -98,6 +117,26 @@ export class LoanCalculatorController {
                 return new LoanCalculatorBullet();
         }
         throw Error("invalid loan type");
+    }
+
+    /**
+     * Ensures that loan interest rate array has right length. If new years are needed,
+     * copies the value of last index.
+     * 
+     * @param loanYears 
+     */
+    private updateLoanInterestRateArray(loanYears: number) {
+        if (this.loanData.yearlyInterestRates.length > loanYears + 1) {
+            this.loanData.yearlyInterestRates = this.loanData.yearlyInterestRates.slice(0, loanYears + 1);
+        } else if (this.loanData.yearlyInterestRates.length < loanYears + 1) {
+            let clone = this.loanData.yearlyInterestRates.slice(0);
+            let defaultInterestRate = this.loanData.yearlyInterestRates.length > 0 ?
+                this.loanData.yearlyInterestRates[this.loanData.yearlyInterestRates.length - 1] : 1; // default 1 if empty
+            for (let i = 0; i < loanYears + 1 - this.loanData.yearlyInterestRates.length; i++) {
+                clone.push(defaultInterestRate);
+            }
+            this.loanData.yearlyInterestRates = clone;
+        }
     }
 
     /**

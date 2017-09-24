@@ -1,17 +1,26 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges } from "@angular/core";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Chart, ChartObject, ChartOptions } from "highcharts";
 import { InterestValueInterface } from "../model/interest-value-interface";
 import { GenericCurveComponent } from "../common/generic-curve-component";
 import { LoanData } from "../model/loan-data";
+import { LoanInterestDataInterface } from "../model/loan-interest-data-interface";
 
 @Component({
   selector: "app-interest-curve",
-  templateUrl: "../common/generic-curve.component.html",
+  templateUrl: "./interest-curve.component.html",
   styleUrls: ["./interest-curve.component.css"]
 })
 export class InterestCurveComponent extends GenericCurveComponent implements OnInit {
   @Input() public initialInterestRates: number[];
+  @Input() public initialFormValues: LoanInterestDataInterface;
   @Output() public valueChanged = new EventEmitter<InterestValueInterface>();
+  @Output() public onSubmit = new EventEmitter<LoanInterestDataInterface>();
+
+  public interestDataForm = new FormGroup({
+    interestStart : new FormControl("", [Validators.required, Validators.min(0)]),
+    interestEnd : new FormControl("", [Validators.required, Validators.min(0)]),
+  });
 
   constructor() {
     super();
@@ -22,6 +31,9 @@ export class InterestCurveComponent extends GenericCurveComponent implements OnI
    */
   public ngOnInit() {
     this.initGraphOptions(this.initialInterestRates);
+    if (this.initialFormValues) {
+      this.interestDataForm.setValue(this.initialFormValues);
+    }
   }
 
   /**
@@ -32,6 +44,15 @@ export class InterestCurveComponent extends GenericCurveComponent implements OnI
    */
   private changeInterestRate(idx: number, value: number) {
     this.valueChanged.emit({idx: idx, value: value});
+  }
+
+  /**
+   * Emits loan rates for curve reset.
+   */
+  public onFormSubmit() {
+    if (this.interestDataForm.valid) {
+      this.onSubmit.emit(this.interestDataForm.value as LoanInterestDataInterface);
+    }
   }
 
   /**
@@ -68,5 +89,15 @@ export class InterestCurveComponent extends GenericCurveComponent implements OnI
   public updateCharts(data: LoanData) {
     this.updateChartData(0, data.yearlyInterestRates);
   }
+
+  /**
+   * Returns true if given form component has validation errors.
+   *
+   * @param formControlName
+   */
+  public hasError(formControlName: string) {
+    return !this.interestDataForm.get(formControlName).valid;
+  }
+
 
 }

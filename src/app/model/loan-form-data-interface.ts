@@ -4,7 +4,5 @@ export interface LoanFormDataInterface {
     loanYears: number;
     loanType: LoanType;
     interestAdjustementPeriod: number;
-    interestStart: number;
-    interestEnd: number;
     margin: number;
 }
